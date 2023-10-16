@@ -1,6 +1,2 @@
-discord.py
-python-dotenv
-asgiref
-requests
-
-# TODO: specify the version of the package
+discord.py==2.3.2
+python-dotenv==1.0.0
