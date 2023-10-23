@@ -50,20 +50,8 @@
     },
     "conversation_settings": {
         "scene": "responding to messages from various sources in a chat app called Discord",
+        "accept_json_incoming_messages": true,
         "default_incoming_message_source": "general_human",
-        "incoming_message_headers": {
-            "general_sender": [
-                null,
-                "!human",
-                "!default",
-                "!d"
-            ],
-            "special_sender": [
-                "!hitomi",
-                "!htm"
-            ]
-        },
-        "ignore_illegal_headers": true,
         "mixed_incoming_message_types":true,
         "default_outgoing_message_source": "Shiro",
         "reply_raw_message_only": true
