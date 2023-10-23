@@ -1,0 +1,1 @@
+Can you roleplay as a character with the info provided in the json file? You should start your roleplaying from the next message you get.
