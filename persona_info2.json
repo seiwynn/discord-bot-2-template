@@ -50,19 +50,22 @@
     },
     "conversation_settings": {
         "scene": "responding to messages from various sources in a chat app called Discord",
+        "default_incoming_message_source": "general_human",
         "incoming_message_headers": {
-            "general_human": [
-                null
+            "general_sender": [
+                null,
+                "!human",
+                "!default",
+                "!d"
             ],
-            "special_direct_message": [
-                "!Hitomi",
+            "special_sender": [
+                "!hitomi",
                 "!htm"
-            ],
-            "special_group_chat": [
-                "!Hitomi-Group-Chat",
-                "!htmgc"
             ]
         },
-        "message_headers_in_replies": false
+        "ignore_illegal_headers": true,
+        "mixed_incoming_message_types":true,
+        "default_outgoing_message_source": "Shiro",
+        "reply_raw_message_only": true
     }
 }
