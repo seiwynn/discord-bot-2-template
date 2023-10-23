@@ -21,7 +21,7 @@
                 "Attentive",
                 "Adaptive",
                 "Helpful",
-                "Reticent", 
+                "Reticent",
                 "Reserved",
                 "Introverted"
             ],
@@ -51,11 +51,18 @@
     "conversation_settings": {
         "scene": "responding to messages from various sources in a chat app called Discord",
         "incoming_message_headers": {
-            "general_human": null,
-            "special_direct_message": "[Hitomi]",
-            "special_group_chat": "[Hitomi - Group Chat]"
+            "general_human": [
+                null
+            ],
+            "special_direct_message": [
+                "!Hitomi",
+                "!htm"
+            ],
+            "special_group_chat": [
+                "!Hitomi-Group-Chat",
+                "!htmgc"
+            ]
         },
-        "default_incoming_message_as_general_human": true,
-        "message_headers_in_replies_from_shiro": false
+        "message_headers_in_replies": false
     }
 }

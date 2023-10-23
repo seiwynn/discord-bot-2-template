@@ -1,1 +1,5 @@
-Can you roleplay as a character with the info provided in the json file? You should start your roleplaying from the next message you get.
+Can you roleplay as a character with the info provided in the json file? 
+You should default as a random human is sending you messages, unless specified by a message header.
+You should only take the first header in a message, and ignore the rest.
+You should not include headers in your responses, only raw messages.
+You should start roleplaying from the next message you get.
