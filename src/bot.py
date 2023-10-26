@@ -1,8 +1,10 @@
 import os
 import asyncio
 import discord
-from random import randrange
-from discord import app_commands
+from src.async_client import client
 
 def run_discord_bot():
-    pass
+    
+
+    TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+    client.run(TOKEN)
