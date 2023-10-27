@@ -18,4 +18,3 @@ class AsyncClient(discord.Client):
         self.activity = discord.Activity(
             type=discord.ActivityType.watching, name="over Hitomi's tasks")
 
-client = AsyncClient()
