@@ -18,3 +18,13 @@ class AsyncClient(discord.Client):
         self.activity = discord.Activity(
             type=discord.ActivityType.watching, name="over Hitomi's tasks")
 
+
+# this should be the only actual discord client existing.
+class SingletonClient():
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = AsyncClient()
+        return cls._instance
+

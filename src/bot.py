@@ -1,16 +1,20 @@
 import os
 import asyncio
 import discord
-from src.async_client import AsyncClient
+from src.async_client import SingletonClient
+from utils import path_utils
 
-# this should be the only actual discord client existing.
-# it will be connected to discord in run_discord_bot().
-client = AsyncClient()
+# ty design pattern class   
+client = SingletonClient()
 
 def run_discord_bot():
+
+    @client.event
+    async def on_ready():
+        await client.tree.sync()
     
     @client.event
-    async def on_message(message):
+    async def on_message(message: discord.Message):
         # print(f"Message received: {message.content}")
         # skip slash commands
         if message.type is discord.MessageType.chat_input_command:
@@ -30,7 +34,7 @@ def run_discord_bot():
         # but apparently we don't need this anymore?
         # await client.process_commands(message)
 
-    @client.tree.command(name="check-status", description="Check most recent status of a human - Hitomi included.")
+    @client.tree.command(name="status", description="Check most recent status of a human - Hitomi included.")
     async def check_status(interaction: discord.Interaction, *, member: discord.Member = None):
         # await interaction.response.send_message(f"Most recent update from {member.name}: ")
         if not member:
@@ -52,10 +56,22 @@ def run_discord_bot():
         # TODO: store messages in data storage
         pass
 
+    @client.tree.command(name="help", description="readme for Shiro")
+    async def help(interaction: discord.Interaction):
+        # this should be relative to root directory
+        help_doc_location = r"assets/docs/help.md"
+        help_message = path_utils.open_file(help_doc_location)
+        # ephemeral=True means hidden reply
+        await interaction.response.defer(ephemeral=False)
+        await interaction.followup.send(help_message)
+
     TOKEN = os.getenv("DISCORD_BOT_TOKEN")
     client.run(TOKEN)
 
 def check_recorded_user(member: discord.Member) -> bool:
     # TODO: check if member is human
     # TODO: check if member is one of the humans allowed to store data
+
+    # placeholder so that no errors come out, remove when implemented
+    return False
     pass
