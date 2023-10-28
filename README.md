@@ -31,3 +31,4 @@ So that you know what I'm up to.
 - [discord.py](https://discordpy.readthedocs.io/en/stable/)
 - [Random GPT bot that I used as my 1st bot template](https://github.com/Zero6992/chatGPT-discord-bot)
   - ~~Definitely not because I learned 90% of my python from existing repos' copypasta.~~
+- [python - How do i make a working slash command in discord.py - Stack Overflow](https://stackoverflow.com/questions/71165431/how-do-i-make-a-working-slash-command-in-discord-py)
