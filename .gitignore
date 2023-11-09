@@ -1,6 +1,6 @@
 .vscode/
 logs/
-data/
+local_data/
 
 # stolen from github template
 

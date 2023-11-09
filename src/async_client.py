@@ -16,7 +16,7 @@ class AsyncClient(discord.Client):
         self.tree = discord.app_commands.CommandTree(self)
         self.current_channel = None
         self.activity = discord.Activity(
-            type=discord.ActivityType.watching, name="over Hitomi's tasks")
+            type=discord.ActivityType.watching, name="my empty description")
 
 
 # this should be the only actual discord client existing.

@@ -1,34 +1,44 @@
-# discord-bot-2-mystatus
-So that you know what I'm up to.
+# discord-bot-2-template
+A template for my future bots.
+Formerly [a status bot](https://github.com/seiwynn/discord-bot-4-shiro) - you'll notice older commits referring to that.
 
-<!-- ### How to use -->
+### How to use
 
-<!-- TODO maybe I should write this? -->
-<!-- (later) -->
+**You would need MESSAGE CONTENT INTENT in your bot page set as `ON`**
+
+1. ~~I think I don't need to write this but still~~
+    ```bash
+    git clone
+    cd discord-bot-2-template
+    # python -m venv venv
+    ```
+
+2. Create a `.env` file in the root directory, `.env.example` is provided as a template.
+    ```bash
+    cp .env.example .env
+    # modify .env as needed
+    ```
+
+3. Install dependencies and run:
+
+    ```bash
+    pip install -r requirements.txt
+    python ./main.py
+    ```
 
 ### TODOs
 - actual logger
-  - no, print stmtys won't work
-- status update function
-  - /status
-  - /update, which grabs history messages
-    - ~~might also record future messages for 1 hour~~
-    nah that would require a ton of event listening 
-  - use specific emoji to ask bot to update
-    - probably a custom emoji?
-    - ~~:sacabam-update:~~
-    - special response, e.g. private msg/card
-  - /clear
+  - no, print statements won't work
 
-- other utils ~~that might take too much time and I want quick stuff now~~
-  - message splitter for 2000 char limit
-  - message queue for slowmode/awaits
-    - 3rd party api requests / scraping / file io
+- message splitter for 2000 char limit
+- message queue for slowmode/awaits
+  - 3rd party api requests / scraping / file io
 
 
 ### Credits
 
 - [discord.py](https://discordpy.readthedocs.io/en/stable/)
 - [Random GPT bot that I used as my 1st bot template](https://github.com/Zero6992/chatGPT-discord-bot)
-  - ~~Definitely not because I learned 90% of my python from existing repos' copypasta.~~
 - [python - How do i make a working slash command in discord.py - Stack Overflow](https://stackoverflow.com/questions/71165431/how-do-i-make-a-working-slash-command-in-discord-py)
+
+~~probably will have even more copypasta from other bot templates/tutorials in the future~~

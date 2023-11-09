@@ -1,7 +1,0 @@
-I want to create a character called 
-{name}
-He's/She's/It's
-{description}
-Can you fill out his appearance, personality,and backstory?
-
-your response should be written in json, using the following template:
