@@ -1,25 +1,97 @@
 import re
-from discord import Message, InteractionType
 
-async def send_message(outgoing_msg_content: str, incoming_msg_obj: Message) -> None:
-    pass
-    # if (message.type is not InteractionType.application_command) or has_followed_up:
-    #     await message.channel.send(response)
-    # else:
-    #     await message.followup.send(response)
-    #     has_followed_up = True
+# tyvm chatGPT
+four_backtick_pattern = r'`{4,}'
+code_block_pattern = r'^(?P<text>[\s\S]*?)```(?P<lang>\w+)?(?P<code>[\s\S]*?)```'
 
-    # return has_followed_up
+min_len = 1500
+max_len = 1800
 
-async def split_message(content: str) -> list[str]:
-    char_limit = 1500
-    if len(content) <= char_limit:
+
+def split_message(content: str) -> list[str]:
+    if len(content) <= max_len:
         return [content]
-    
-    # TODO: deal with sequences of ```` (4 or more) in the message, replece with \`
-    # too many `s screw up markdown, even in code blocks
-    # typora has its own way of dealing with this, but not discord.
 
-    # TODO: code block separation and internal splitting
-    # TODO: deal with rest of the text, try to split on whitespace
-    
+    # Handle sequences of four or more backticks in the message
+    # Replace each occurrence with a string of backslashes and backticks
+    content = re.sub(
+        pattern=four_backtick_pattern,
+        repl=lambda match: "\`" * len(match.group(0)),
+        string=content
+    )
+
+    segments = []
+
+    # handle mixed code blocks and text
+    match = re.match(code_block_pattern, content)
+    while match:
+        # in case text is nothing but whitespace
+        text = match.group('text').strip()
+        if text:
+            text_segments = split_smart(text)
+            segments.extend(text_segments)
+
+        code_block = match.group('code').strip()
+        language = match.group('lang') or ''
+        code_segments = split_code(code=code_block, lang=language)
+        segments.extend(code_segments)
+
+        # remove matched text+code
+        content = content[match.end():].lstrip()
+
+        # check for more code blocks
+        match = re.match(code_block_pattern, content)
+
+    # handle remaining text
+    text_segments = split_smart(content)
+    segments.extend(text_segments)
+
+    return segments
+
+
+def split_code(code: str, lang: str) -> list[str]:
+    code_header = f'```{lang}\n'
+    code_footer = '\n```'
+    # skip short code blocks
+    if len(code) <= max_len-len(code_header)-len(code_footer):
+        return [code_header + code + code_footer]
+
+    segments = split_smart(
+        code,
+        pattern=r'\n\S',
+        local_min=min_len-len(code_header)-len(code_footer),
+        local_max=max_len-len(code_header)-len(code_footer)
+    )
+
+    # add code block header and footer
+    segments = [code_header + segment + code_footer for segment in segments]
+    return segments
+
+
+def split_smart(
+    text: str,
+    pattern: str = r'\s\S',
+    local_min=min_len,
+    local_max=max_len
+) -> list[str]:
+
+    segments = []
+    while text:
+        text = text.strip()
+
+        # If the remaining text is shorter than the max length, add it as is
+        if text and len(text) <= local_max:
+            segments.append(text)
+            break
+
+        # Find the last whitespace character before the max length
+        split_index = local_max
+        match = re.search(pattern, text[local_min:local_max])
+        if match:
+            split_index = local_min + match.start() + 1
+
+        # Add the segment and remove it from the text
+        segments.append(text[:split_index].strip())
+        text = text[split_index:]
+
+    return segments

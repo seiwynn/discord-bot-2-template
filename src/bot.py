@@ -51,7 +51,7 @@ def run_discord_bot():
     @client.tree.command(name="help", description="readme for bot")
     async def help(interaction: discord.Interaction):
         # this should be relative to root directory
-        help_doc_location = r"assets/docs/help.md"
+        help_doc_location = "assets/docs/help.md"
         help_message = path_utils.open_file(help_doc_location)
         # ephemeral=True means hidden reply
         await interaction.response.defer(ephemeral=False)
