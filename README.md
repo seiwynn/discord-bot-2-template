@@ -2,6 +2,10 @@
 A template for my future bots.
 Formerly [a status bot](https://github.com/seiwynn/discord-bot-4-shiro) - you'll notice older commits referring to that.
 
+### Newly added features
+
+- 11/13/2023: message splitter for 2000 char limit
+
 ### How to use
 
 **You would need MESSAGE CONTENT INTENT in your bot page set as `ON`**
@@ -30,7 +34,7 @@ Formerly [a status bot](https://github.com/seiwynn/discord-bot-4-shiro) - you'll
 - actual logger
   - no, print statements won't work
 
-- message splitter for 2000 char limit
+- ~~message splitter for 2000 char limit~~
 - message queue for slowmode/awaits
   - 3rd party api requests / scraping / file io
 
