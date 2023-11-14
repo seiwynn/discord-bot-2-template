@@ -1,6 +1,6 @@
-from discord import Message, Interaction, InteractionType
+from discord import Message, Interaction
 from typing import Union
-from utils.msg_split import split_message
+from utils import msg_split
 
 
 async def send_message(
@@ -8,22 +8,22 @@ async def send_message(
     incoming_msg_obj: Union[Message, Interaction]
 ) -> None:
     # split message into segments
-    segments = split_message(outgoing_msg_content)
+    segments = msg_split.split_message(outgoing_msg_content)
 
     # discord allows multiple followups, so we can use only followups
     while segments:
         segment = segments.pop(0)
 
-        if incoming_msg_obj.type is InteractionType.application_command:
+        if isinstance(incoming_msg_obj, Interaction):
+            # slash commands
             await incoming_msg_obj.followup.send(segment)
         else:
-            # not a slash command
-            # most likely a regular message
+            # normal messages
             await incoming_msg_obj.channel.send(segment)
-            
+
 
 def get_cmd_header(
-    id: int, 
+    id: int,
     title: str
 ) -> str:
     return f'> **{title}** - <@{str(id)}> \n\n'

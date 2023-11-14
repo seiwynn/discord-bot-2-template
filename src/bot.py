@@ -2,13 +2,14 @@ import os
 import asyncio
 import discord
 from src.async_client import SingletonClient
-from utils import path_utils
+from utils.fileio import read
 
 # ty design pattern class
-client = SingletonClient()
 
 
-def run_discord_bot():
+
+def run_discord_bot(token: str):
+    client = SingletonClient()
 
     @client.event
     async def on_ready():
@@ -38,10 +39,9 @@ def run_discord_bot():
     async def help(interaction: discord.Interaction):
         # should be relative to root directory
         help_doc_location = "assets/docs/help.md"
-        help_message = path_utils.open_file(help_doc_location)
+        help_message = read(help_doc_location)
         # ephemeral=True means hidden reply
         await interaction.response.defer(ephemeral=False)
         await interaction.followup.send(help_message)
 
-    TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-    client.run(TOKEN)
+    client.run(token)

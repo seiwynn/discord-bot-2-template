@@ -8,7 +8,7 @@ pattern = r'`{4,}'
 
 # Define a replacement function to replace every backtick with `\`
 def replace_backticks(match):
-    return "\`" * len(match.group(0))
+    return r"\`" * len(match.group(0))
 
 # Use re.sub() to perform the replacement
 output_string = re.sub(pattern, replace_backticks, input_string)

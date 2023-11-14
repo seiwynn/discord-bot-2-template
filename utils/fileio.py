@@ -3,7 +3,7 @@ import os
 def get_absolute_path(relative_path: str) -> str:
     return os.path.abspath(os.path.join(os.getcwd(), relative_path))
 
-def open_file_and_read(relative_path: str) -> str:
+def read(relative_path: str) -> str:
     absolute_path = get_absolute_path(relative_path)
     try: 
         with open(absolute_path, mode="r", encoding="utf-8") as f:

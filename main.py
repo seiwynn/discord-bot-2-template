@@ -1,4 +1,4 @@
-import sys
+import os
 from src import bot
 from dotenv import load_dotenv
 
@@ -12,4 +12,9 @@ def check_library_versions() -> None:
 
 if __name__ == '__main__':
     check_library_versions()
-    bot.run_discord_bot()
+    token = os.getenv("DISCORD_BOT_TOKEN")
+    if token:
+        bot.run_discord_bot(
+            token=token
+        )
+

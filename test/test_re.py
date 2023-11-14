@@ -6,7 +6,7 @@ content = "``````````````````"
 content = re.sub(
     pattern=four_backtick_pattern,
     # repl=replace_backticks,
-    repl=lambda match: "\`" * len(match.group(0)),
+    repl=lambda match: r"\`" * len(match.group(0)),
     string=content
 )
 

@@ -28,3 +28,7 @@ class SingletonClient():
             cls._instance = AsyncClient()
         return cls._instance
 
+    @classmethod
+    def reset(cls):
+        cls._instance = None
+
