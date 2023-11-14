@@ -1,11 +1,11 @@
-from discord import Message, Interaction
-from typing import Union
+from typing import Callable, Any
+import inspect
 from utils import msg_split
 
 
 async def send_message(
     outgoing_msg_content: str,
-    incoming_msg_obj: Union[Message, Interaction]
+    callback: Callable[[str], Any]
 ) -> None:
     # split message into segments
     segments = msg_split.split_message(outgoing_msg_content)
@@ -14,16 +14,16 @@ async def send_message(
     while segments:
         segment = segments.pop(0)
 
-        if isinstance(incoming_msg_obj, Interaction):
-            # slash commands
-            await incoming_msg_obj.followup.send(segment)
+        # this would be your own function that sends a message
+        if inspect.iscoroutinefunction(callback):
+            await callback(segment)
         else:
-            # normal messages
-            await incoming_msg_obj.channel.send(segment)
+            # shouldn't happen in discord, but just in case
+            callback(segment)
 
 
 def get_cmd_header(
-    id: int,
-    title: str
+        id: int,
+        title: str
 ) -> str:
     return f'> **{title}** - <@{str(id)}> \n\n'
