@@ -1,16 +1,17 @@
 import re
 
-# tyvm chatGPT
-four_backtick_pattern = r'`{4,}'
-code_block_pattern = r'^(?P<text>[\s\S]*?)```(?P<lang>\w+)?(?P<code>[\s\S]*?)```'
-
-min_len = 1500
-max_len = 1800
+def get_min_len(): return 1500
+def get_max_len(): return 1800
 
 
 def split_message(content: str) -> list[str]:
-    if len(content) <= max_len:
+    if len(content) <= get_max_len():
         return [content]
+    
+    # tyvm chatGPT
+    four_backtick_pattern = r'`{4,}'
+    code_block_pattern = r'^(?P<text>[\s\S]*?)```(?P<lang>\w+)?(?P<code>[\s\S]*?)```'
+
 
     # Handle sequences of four or more backticks in the message
     # Replace each occurrence with a string of backslashes and backticks
@@ -53,14 +54,15 @@ def split_code(code: str, lang: str) -> list[str]:
     code_header = f'```{lang}\n'
     code_footer = '\n```'
     # skip short code blocks
-    if len(code) <= max_len-len(code_header)-len(code_footer):
+    if len(code) <= get_max_len()-len(code_header)-len(code_footer):
         return [code_header + code + code_footer]
 
+    # split code by newlines, instead of whitespace
     segments = split_smart(
         code,
         pattern=r'\n\S',
-        local_min=min_len-len(code_header)-len(code_footer),
-        local_max=max_len-len(code_header)-len(code_footer)
+        local_min=get_min_len()-len(code_header)-len(code_footer),
+        local_max=get_max_len()-len(code_header)-len(code_footer)
     )
 
     # add code block header and footer
@@ -71,8 +73,8 @@ def split_code(code: str, lang: str) -> list[str]:
 def split_smart(
     text: str,
     pattern: str = r'\s\S',
-    local_min=min_len,
-    local_max=max_len
+    local_min=get_min_len(),
+    local_max=get_max_len()
 ) -> list[str]:
 
     segments = []

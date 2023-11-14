@@ -5,11 +5,11 @@ import os
 # Add the parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Now you can import the module
-from utils import message_utils2
+from utils.msg_split import split_message
 # rest of your code
 
 
-result = message_utils2.split_message("""
+result = split_message("""
 
 Some text before code block
 ```python\nprint('Hello, world!')
