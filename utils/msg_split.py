@@ -86,11 +86,14 @@ def split_smart(
             segments.append(text)
             break
 
-        # Find the last whitespace character before the max length
+        # Find first group of whitespace in [local_min, local_max]
         split_index = local_max
         match = re.search(pattern, text[local_min:local_max])
         if match:
+            # split before next word
+            # e.g. "hello   world" -> split at " w"
             split_index = local_min + match.start() + 1
+            
 
         # Add the segment and remove it from the text
         segments.append(text[:split_index].strip())
