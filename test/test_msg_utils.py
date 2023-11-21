@@ -3,7 +3,7 @@ import os
 # Add the parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Now you can import the module
-from utils.msg_split import split_message
+from utils.message import split_message
 # rest of your code
 
 
