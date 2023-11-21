@@ -1,58 +1,70 @@
 import discord
-from src.async_client import SingletonClient
 from utils.fileio import read
-from src.message import send_message
+from utils.message import send
 
 # ty design pattern class
 
 
-def run_discord_bot(token: str):
-    client = SingletonClient()
+class Bot(discord.Client):
+    def __init__(
+        self,
+        token: str,
+        intents: discord.Intents = discord.Intents(messages=True)
+    ):
+        super().__init__(intents=intents)
+        self.token = token
+        self.tree = discord.app_commands.CommandTree(self)
+        self.current_channel = None
 
-    @client.event
-    async def on_ready():
-        await client.tree.sync()
+        self.activity = discord.Activity(
+            type=discord.ActivityType.watching,
+            name="my empty description"
+        )
 
-    @client.event
-    async def on_message(message: discord.Message):
-        # print(f"Message received: {message.content}")
-        # skip slash commands
+        self.register_cogs()
+        self.synced = False
+
+    def register_cogs(self):
+        self.event(self.on_message)
+        self.tree.command(
+            name="help",
+            description="use guide"
+        )(self.help)
+
+    async def on_ready(self):
+        print(f"Logged in as {self.user.name}, id: {self.user.id}")
+
+        # sync commands if not already done
+        if not self.synced:
+            await self.tree.sync()
+            self.synced = True
+
+    async def on_message(self, message: discord.Message):
+        # skip slash commands and self
         if message.type is discord.MessageType.chat_input_command:
             return
-        # skip if it's the bot itself
-        # they might be different objects in memory, don't use 'is' operator
-        if message.author == client.user:
+        if message.author == self.user:  # must use ==, not 'is'
             return
 
         # flags to identify source of message
         is_dm = not message.guild
-        is_mentioned = client.user in message.mentions
+        is_mentioned = self.user in message.mentions
+        # flag to identify if message is a reply
+        if message.reference:
+            # type: discord.Message
+            msg_replied = await message.channel.fetch_message(message.reference.message_id)
 
-        # TODO: handle the msg however you want
-
-        # https://discordpy.readthedocs.io/en/stable/faq.html#why-does-on-message-make-my-commands-stop-working
-        # but apparently we don't need this anymore
-        # await client.process_commands(message)
-
-    # @client.tree.command(name="__template_cmd__", description="template code for a command you want")
-    async def template_cmd(interaction: discord.Interaction, *, specified_param: str = ""):
-        # ignore self
-        if interaction.user == client.user:
-            pass
-
-        # interaction.response can be used only once; we'll use it to defer, then followup
-        # ephemeral=True means hidden reply
-        await interaction.response.defer(ephemeral=False)
-
-        await interaction.followup.send(f"use this method for replying to slash commands")
-
-    @client.tree.command(name="help", description="readme for bot")
-    async def help(interaction: discord.Interaction):
+    async def help(self, interaction: discord.Interaction):
         # this should be relative to root directory
         help_doc_location = "assets/docs/help.md"
         help_message = read(help_doc_location)
         # ephemeral=True means hidden reply
         await interaction.response.defer(ephemeral=False)
-        await send_message(help_message, interaction.followup.send)
+        await send(help_message, callback=interaction.followup.send)
 
-    client.run(token)
+    @staticmethod
+    def get_cmd_header(
+        id: int,
+        title: str
+    ) -> str:
+        return f'> **{title}** - <@{str(id)}> \n\n'

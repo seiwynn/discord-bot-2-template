@@ -13,8 +13,6 @@ def check_library_versions() -> None:
 if __name__ == '__main__':
     check_library_versions()
     token = os.getenv("DISCORD_BOT_TOKEN")
-    if token:
-        bot.run_discord_bot(
-            token=token
-        )
+    client = bot.Bot(token)
+    client.run(client.token)
 

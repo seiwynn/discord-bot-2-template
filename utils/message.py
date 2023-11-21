@@ -1,17 +1,36 @@
 import re
 
+
 def get_min_len(): return 1500
 def get_max_len(): return 1800
+
+
+async def send(
+    outgoing_msg_content: str,
+    callback,
+    *,
+    first_msg_callback=None
+) -> None:
+    # split message into segments
+    segments = split_message(outgoing_msg_content)
+    # if you want to deal with the first segment differently
+    if first_msg_callback:
+        await first_msg_callback(segments[0])
+        segments.pop(0)
+
+    # everything else
+    while segments:
+        segment = segments.pop(0)
+        await callback(segment)
 
 
 def split_message(content: str) -> list[str]:
     if len(content) <= get_max_len():
         return [content]
-    
+
     # tyvm chatGPT
     four_backtick_pattern = r'`{4,}'
     code_block_pattern = r'^(?P<text>[\s\S]*?)```(?P<lang>\w+)?(?P<code>[\s\S]*?)```'
-
 
     # Handle sequences of four or more backticks in the message
     # Replace each occurrence with a string of backslashes and backticks
@@ -93,7 +112,6 @@ def split_smart(
             # split before next word
             # e.g. "hello   world" -> split at " w"
             split_index = local_min + match.start() + 1
-            
 
         # Add the segment and remove it from the text
         segments.append(text[:split_index].strip())
