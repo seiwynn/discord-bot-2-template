@@ -1,4 +1,10 @@
+import os
 import discord
+from discord.ui import Button, View
+
+from src.modal import ModalSample
+from src.button import send_button
+
 from utils.fileio import read
 from utils.message import send
 
@@ -30,9 +36,18 @@ class Bot(discord.Client):
             name="help",
             description="use guide"
         )(self.help)
+        self.tree.command(
+            name="modal",
+            description="testing modals"
+        )(self.modal)
 
     async def on_ready(self):
-        print(f"Logged in as {self.user.name}, id: {self.user.id}")
+
+        # Replace GUILD_ID with the actual guild ID
+        guild = discord.Object(id=os.getenv("TESTING_GUILD_ID"))
+        await self.tree.sync(guild=guild)
+        print(
+            f"Logged in as {self.user} and synced commands to guild ID {guild.id}")
 
         # sync commands if not already done
         if not self.synced:
@@ -54,6 +69,10 @@ class Bot(discord.Client):
             # type: discord.Message
             msg_replied = await message.channel.fetch_message(message.reference.message_id)
 
+        # sample usage of buttons/modals
+        if is_mentioned:
+            await send_button(message.channel)
+
     async def help(self, interaction: discord.Interaction):
         # this should be relative to root directory
         help_doc_location = "assets/docs/help.md"
@@ -61,6 +80,9 @@ class Bot(discord.Client):
         # ephemeral=True means hidden reply
         await interaction.response.defer(ephemeral=False)
         await send(help_message, callback=interaction.followup.send)
+
+    async def modal(self, interaction: discord.Interaction):
+        await interaction.response.send_modal(ModalSample())
 
     @staticmethod
     def get_cmd_header(
