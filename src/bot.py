@@ -3,7 +3,7 @@ import discord
 from discord.ui import Button, View
 
 from src.modal import ModalSample
-from src.button import send_button
+from src.button import modal_button
 
 from utils.fileio import read
 from utils.message import send
@@ -71,7 +71,10 @@ class Bot(discord.Client):
 
         # sample usage of buttons/modals
         if is_mentioned:
-            await send_button(message.channel)
+            await message.channel.send(
+                "Click the button below!",
+                view=await modal_button()
+            )
 
     async def help(self, interaction: discord.Interaction):
         # this should be relative to root directory
