@@ -1,14 +1,27 @@
-# TODO: logger function
+import logging
 
-class SimpleLogger():
-    def __init__(self) -> None:
-        pass
+debug_mode = False
 
-# this should be the only actual logger existing.
-class SingletonLogger():
-    _instance = None
+logger = logging.getLogger('discord')
+logger.setLevel(logging.DEBUG if debug_mode else logging.INFO)
+logging.getLogger('discord.http').setLevel(logging.INFO)
+logging.getLogger('discord.state').setLevel(logging.INFO)
 
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = SimpleLogger()
-        return cls._instance
+dt_fmt = '%Y-%m-%d %H:%M:%S'
+formatter = logging.Formatter(
+    '[{asctime}] [{levelname:<8}] {name}: {message}', dt_fmt, style='{'
+)
+
+file_handler = logging.handlers.RotatingFileHandler(
+    filename='logs/discord.log',
+    encoding='utf-8',
+    maxBytes=32 * 1024 * 1024,  # 32 MiB
+    backupCount=2,
+)
+file_handler.setFormatter(formatter)
+
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(formatter)
+
+logging.getLogger('discord').addHandler(console_handler)
+logger.addHandler(file_handler)

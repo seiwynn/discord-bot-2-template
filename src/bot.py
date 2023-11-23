@@ -4,6 +4,7 @@ from discord.ui import Button, View
 
 from src.modal import ModalSample
 from src.button import modal_button
+from utils.logger import logger
 
 from utils.fileio import read
 from utils.message import send
@@ -27,26 +28,30 @@ class Bot(discord.Client):
             name="my empty description"
         )
 
-        self.register_cogs()
+        # self.register_cogs()
         self.synced = False
 
     def register_cogs(self):
-        self.event(self.on_message)
+        # register commands
         self.tree.command(
             name="help",
             description="use guide"
         )(self.help)
         self.tree.command(
             name="modal",
-            description="testing modals"
+            description="modal sample"
         )(self.modal)
+        self.tree.command(
+            name="button",
+            description="button sample"
+        )(self.button)
 
     async def on_ready(self):
 
         # Replace GUILD_ID with the actual guild ID
         guild = discord.Object(id=os.getenv("TESTING_GUILD_ID"))
         await self.tree.sync(guild=guild)
-        print(
+        logger.info(
             f"Logged in as {self.user} and synced commands to guild ID {guild.id}")
 
         # sync commands if not already done
@@ -55,26 +60,18 @@ class Bot(discord.Client):
             self.synced = True
 
     async def on_message(self, message: discord.Message):
-        # skip slash commands and self
+        # skip slash commands and self (and other bots)
         if message.type is discord.MessageType.chat_input_command:
             return
-        if message.author == self.user:  # must use ==, not 'is'
+        if (message.author == self.user) or message.author.bot:  # must use ==, not 'is'
             return
 
         # flags to identify source of message
         is_dm = not message.guild
         is_mentioned = self.user in message.mentions
-        # flag to identify if message is a reply
         if message.reference:
             # type: discord.Message
             msg_replied = await message.channel.fetch_message(message.reference.message_id)
-
-        # sample usage of buttons/modals
-        if is_mentioned:
-            await message.channel.send(
-                "Click the button below!",
-                view=await modal_button()
-            )
 
     async def help(self, interaction: discord.Interaction):
         # this should be relative to root directory
@@ -86,6 +83,13 @@ class Bot(discord.Client):
 
     async def modal(self, interaction: discord.Interaction):
         await interaction.response.send_modal(ModalSample())
+
+    async def button(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=False)
+        await interaction.followup.send(
+            "Click the button below!",
+            view=await modal_button()
+        )
 
     @staticmethod
     def get_cmd_header(
