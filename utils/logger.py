@@ -1,8 +1,11 @@
 import logging
+from logging import handlers
+import os
 
 debug_mode = False
 
 logger = logging.getLogger('discord')
+logger.propagate = False  # no double logging
 logger.setLevel(logging.DEBUG if debug_mode else logging.INFO)
 logging.getLogger('discord.http').setLevel(logging.INFO)
 logging.getLogger('discord.state').setLevel(logging.INFO)
@@ -12,7 +15,11 @@ formatter = logging.Formatter(
     '[{asctime}] [{levelname:<8}] {name}: {message}', dt_fmt, style='{'
 )
 
-file_handler = logging.handlers.RotatingFileHandler(
+
+log_directory = "logs"
+if not os.path.exists(log_directory):
+    os.makedirs(log_directory)
+file_handler = handlers.RotatingFileHandler(
     filename='logs/discord.log',
     encoding='utf-8',
     maxBytes=32 * 1024 * 1024,  # 32 MiB
