@@ -21,6 +21,7 @@ class AsyncClient(discord.Client):
 
 # this should be the only actual discord client existing.
 class SingletonClient():
+    # type: discord.Client
     _instance = None
 
     def __new__(cls):

@@ -79,7 +79,7 @@ def split_code(code: str, lang: str) -> list[str]:
     # split code by newlines, instead of whitespace
     segments = split_smart(
         code,
-        pattern=r'\n\S',
+        pattern=r'\n\s*\S',
         local_min=get_min_len()-len(code_header)-len(code_footer),
         local_max=get_max_len()-len(code_header)-len(code_footer)
     )
