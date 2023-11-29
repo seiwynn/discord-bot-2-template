@@ -2,18 +2,17 @@ import logging
 from logging import handlers
 import os
 
-debug_mode = True
+# if you want super verbose logging
+logging.basicConfig(level=logging.DEBUG)
 
 logger = logging.getLogger('discord')
-logger.setLevel(logging.DEBUG if debug_mode else logging.INFO)
+logger.setLevel(logging.DEBUG)
 logging.getLogger('discord.http').setLevel(logging.INFO)
-logging.getLogger('discord.state').setLevel(logging.INFO)
 
 dt_fmt = '%Y-%m-%d %H:%M:%S'
 formatter = logging.Formatter(
     '[{asctime}] [{levelname:<8}] {name}: {message}', dt_fmt, style='{'
 )
-
 
 log_directory = "logs"
 if not os.path.exists(log_directory):
@@ -26,8 +25,8 @@ file_handler = handlers.RotatingFileHandler(
 )
 file_handler.setFormatter(formatter)
 
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(formatter)
+# console_handler = logging.StreamHandler()
+# console_handler.setFormatter(formatter)
+# logging.getLogger('discord').addHandler(console_handler)
 
-logging.getLogger('discord').addHandler(console_handler)
 logger.addHandler(file_handler)

@@ -14,9 +14,6 @@ if __name__ == '__main__':
     check_library_versions()
     token = os.getenv("DISCORD_BOT_TOKEN")
 
-    # just in case
-    # logging.basicConfig(level=logging.DEBUG)
-
     if token:
         # run the actual bot
         client = bot.get_cli_with_cogs(token)
