@@ -1,6 +1,6 @@
 import discord
 from discord.ui import Button, View
-from src.modal import ModalSample
+from src.ui.modal import ModalSample
 
 
 async def modal_button():

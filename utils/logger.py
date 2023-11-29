@@ -2,10 +2,9 @@ import logging
 from logging import handlers
 import os
 
-debug_mode = False
+debug_mode = True
 
 logger = logging.getLogger('discord')
-logger.propagate = False  # no double logging
 logger.setLevel(logging.DEBUG if debug_mode else logging.INFO)
 logging.getLogger('discord.http').setLevel(logging.INFO)
 logging.getLogger('discord.state').setLevel(logging.INFO)
