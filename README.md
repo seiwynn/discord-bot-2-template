@@ -31,9 +31,7 @@ Formerly [a status bot](https://github.com/seiwynn/discord-bot-4-shiro) - you'll
     ```
 
 ### TODOs
-- actual logger
-  - no, print statements won't work
-
+- ~~actual logger~~
 - ~~message splitter for 2000 char limit~~
 - message queue for slowmode/awaits
   - 3rd party api requests / scraping / file io
@@ -42,6 +40,7 @@ Formerly [a status bot](https://github.com/seiwynn/discord-bot-4-shiro) - you'll
 ### Credits
 
 - [discord.py](https://discordpy.readthedocs.io/en/stable/)
+- [discord.py official examples](https://github.com/Rapptz/discord.py/tree/master/examples)
 - [Random GPT bot that I used as my 1st bot template](https://github.com/Zero6992/chatGPT-discord-bot)
 - [python - How do i make a working slash command in discord.py - Stack Overflow](https://stackoverflow.com/questions/71165431/how-do-i-make-a-working-slash-command-in-discord-py)
 

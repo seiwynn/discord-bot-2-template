@@ -36,7 +36,7 @@ def split_message(content: str) -> list[str]:
     # Replace each occurrence with a string of backslashes and backticks
     content = re.sub(
         pattern=four_backtick_pattern,
-        repl=lambda match: "\`" * len(match.group(0)),
+        repl=lambda match: r'\`' * len(match.group(0)),
         string=content
     )
 
@@ -79,7 +79,7 @@ def split_code(code: str, lang: str) -> list[str]:
     # split code by newlines, instead of whitespace
     segments = split_smart(
         code,
-        pattern=r'\n\S',
+        pattern=r'\n\s*\S',
         local_min=get_min_len()-len(code_header)-len(code_footer),
         local_max=get_max_len()-len(code_header)-len(code_footer)
     )
@@ -110,7 +110,7 @@ def split_smart(
         match = re.search(pattern, text[local_min:local_max])
         if match:
             # split before next word
-            # e.g. "hello   world" -> split at " w"
+            # e.g. 'hello   world' -> split at ' w'
             split_index = local_min + match.start() + 1
 
         # Add the segment and remove it from the text
