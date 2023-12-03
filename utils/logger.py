@@ -31,3 +31,13 @@ file_handler.setFormatter(formatter)
 # logging.getLogger('discord').addHandler(console_handler)
 
 logger.addHandler(file_handler)
+
+'''
+credits:
+https://github.com/Rapptz/discord.py/blob/master/examples/advanced_startup.py
+https://discordpy.readthedocs.io/en/latest/logging.html
+https://docs.python.org/3/howto/logging.html
+https://docs.python.org/3/howto/logging.html
+https://github.com/kkrypt0nn/Python-Discord-Bot-Template/blob/main/bot.py
+
+'''
