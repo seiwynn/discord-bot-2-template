@@ -1,8 +1,4 @@
-import os
-import json
 import discord
-import asyncio
-import typing
 
 from dotenv import load_dotenv
 load_dotenv()
