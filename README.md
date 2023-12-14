@@ -1,12 +1,20 @@
 # discord-bot-2-template
 A template for my future bots.
 
-### How to use
+### Prerequisites
 
-**You would need MESSAGE CONTENT INTENT in your bot page set as `ON`**
+- Create a bot on [Discord Developer Portal — My Applications](https://discord.com/developers/applications)
+
+- **You would need MESSAGE CONTENT INTENT in your bot page set as `ON`**
+
+  ![image-20231214000335948](README.assets/image-20231214000335948.png)
+
+  While most other stuff can be left disabled, way too many functions (mentions, DMs, etc) rely on this. My advice: just leave it enabled.
+
+### Code setup
 
 1. ~~I think I don't need to write this but still~~
-    
+   
     ```bash
     git clone
     cd discord-bot-2-template
@@ -25,11 +33,8 @@ A template for my future bots.
     pip install -r requirements.txt
     python ./main.py
     ```
-
-### New stuff
-
-- message splitter for 2000 char limit
-- logger
+    
+4. If you want to, check [this tutorial](assets/docs/discord_bot_tutorial.md)
 
 ### TODOs
 
